@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
+
 import { Employee } from './employee.model';
 
 @Injectable()
@@ -19,7 +20,6 @@ export class EmployeeService {
   }
 
   getEmployeeList(id) {
-    console.log(id);
     return this.http.get(this.baseURL, {
       params: { user_id: id }
   });
@@ -32,4 +32,10 @@ export class EmployeeService {
   deleteEmployee(_id: string) {
     return this.http.delete(this.baseURL + `/${_id}`);
   }
+
+  localStorageItem(id: string): string {
+    return localStorage.getItem(id);
+  }
+
+  
 }

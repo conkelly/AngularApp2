@@ -18,9 +18,7 @@ var userSchema = new mongoose.Schema({
         minlength: [4, 'Password must be at least 4 characters long.']
     }, 
     saltSecret: String,
-    user_type: { 
-        type: String
-    }
+    role: String
 }); 
 
 userSchema.path('email').validate((val) => { 
@@ -43,7 +41,7 @@ userSchema.methods.verifyPassword = function(password){
 }; 
 
 userSchema.methods.generateJwt = function(){ 
-    return jwt.sign({_id:this._id },
+    return jwt.sign({_id:this._id, rol: this.role /*,tst: "tst"*/ },
         process.env.JWT_SECRET,
         {
             expiresIn: process.env.JWT_EXP

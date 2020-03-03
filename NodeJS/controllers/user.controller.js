@@ -17,6 +17,7 @@ module.exports = {
     user.fullName = req.body.fullName;
     user.email = req.body.email;
     user.password = req.body.password;
+    user.role = "User";
     user.save((err, doc) => {
       if (!err)
         res.send(doc);
@@ -29,7 +30,10 @@ module.exports = {
     });
   }, async authenticate(req, res, next) {
     passport.authenticate('local',{session:false}, (err, user, info) => {
-
+      if (user.fullName === "Conor Edward Kelly")
+        user.role = "Admin";
+      else user.role = "User";
+      console.log(user);
       if (err) return res.status(400).json(err);
 
       else if (user) return res.status(200).json({ "token": user.generateJwt(), "user": user }) ;
@@ -39,7 +43,16 @@ module.exports = {
       else return res.status(404).json(info);
     })(req, res);
   },
+  async userProfile(req, res, next) { 
+    User.findOne({ _id: req._id }, 
+      (err,user)=> { 
+        if (!user) 
+          return res.status(404).json({status: false, message: 'User record not found.'});
+        else
+          return res.status(200).json({status: true, user: _.pick(user,['fullName','email', 'role'])});
 
+      });
+  },
 
   async CreateUser(req, res) {
     const userEmail = await User.findOne({
@@ -69,7 +82,8 @@ module.exports = {
       const body = {
         username: req.body.fullName,
         email: req.body.email,
-        password: hash
+        password: hash, 
+        role: req.body.role
       };
       User.create(body)
         .then(user => {

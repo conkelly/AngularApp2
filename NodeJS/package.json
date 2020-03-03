@@ -21,6 +21,7 @@
     "nodemailer": "^6.4.2",
     "nodemailer-express-handlebars": "^3.1.0",
     "passport": "^0.4.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "passport-oauth2-jwt-bearer": "^0.2.0"
   }
 }

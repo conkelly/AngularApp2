@@ -4,12 +4,17 @@ import{ HttpClient, HttpHeaders, HttpHandler, HttpEvent, HttpInterceptor } from 
 import{ environment } from '../../environments/environment'; //localhost:3000/api
 import { Observable } from 'rxjs';
 
+
 @Injectable({ providedIn: 'root'})
 
 export class UserService { selectedUser: User = { 
-    fullName: '', email: '', password: '', user_type: ''};
+    fullName: '', email: '', password: '', role: ''};
 
-  constructor(private http: HttpClient) { } 
+  constructor(private http: HttpClient) { 
+  
+  } 
+
+  noAuthHeader = { headers: new HttpHeaders({'NoAuth':'True'})};
 
   postUser(user: User): Observable<any> { 
     return this.http.post(environment.apiBaseUrl+'/register',user);
@@ -40,6 +45,9 @@ export class UserService { selectedUser: User = {
     localStorage.removeItem('token');
   }
 
+  getToken(){ 
+    return localStorage.getItem('token'); 
+  }
   getUserPayload(){
     var token = localStorage.getItem('token');
     if (token){
@@ -55,4 +63,7 @@ export class UserService { selectedUser: User = {
     if (userPayload)
       return userPayload.exp > Date.now()/1000;
   }
+
+  
 }
+

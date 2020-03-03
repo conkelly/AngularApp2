@@ -95,6 +95,7 @@
                       <th>Phone</th> 
                       <th>Website</th> 
                       <th>Description</th> 
+                      <th *ngIf="employeeService.localStorageItem('role') == 'Admin'">User</th>
                       <th></th>
                     </tr>
                   </thead>
@@ -106,6 +107,7 @@
                     <td>{{emp.phone}}</td>
                     <td>{{emp.website}}</td>
                     <td>{{emp.description}}</td>
+                    <td *ngIf="employeeService.localStorageItem('role') == 'Admin'">{{emp.user}}</td>
                     <td>
                         <a class="action-btn" (click)="onEdit(emp)">
                           <i class="material-icons">edit</i>
